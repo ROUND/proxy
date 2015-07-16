@@ -1,11 +1,18 @@
 <?php header('Access-Control-Allow-Origin: *');
 
-$url = $_GET['url'];
+//errors
+if ($_GET['errors'] === '') {
+	error_reporting(E_ALL);
+	ini_set('display_errors', 1);
+}
 
-if (strpos($url,'http://') === 0 or strpos($url,'https://') === 0) {
-	//good url
+$target = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : $_SERVER['REDIRECT_URL'];
+$path = preg_split('|/|', $target, -1, PREG_SPLIT_NO_EMPTY);
+
+if ($path[0] == 'http:' || $path[0] == 'https:') {
+		$url = $path[0] . '//' . join('/', array_slice($path, 1));
 	} else {
-	$url = 'http://' . $url;
+		$url = 'http://' . join('/', $path);;
 }
 
 $uri = parse_url(urldecode($url));
@@ -26,12 +33,6 @@ if (isset($_GET['replace']) && isset($_GET['with'])) {
 //flags
 if ($_GET['flag'] === '') {
 	$output = str_replace('</body>', "<script>alert('flag')</script></body>", $output);
-}
-
-//errors
-if ($_GET['errors'] === '') {
-	error_reporting(E_ALL);
-	ini_set('display_errors', 1);
 }
 
 //preset replacements
