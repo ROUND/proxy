@@ -51,6 +51,15 @@ $script = $dom->createElement('script');
 $script_src= $dom->createAttribute('src');
 $script_src->value =  $server . '/script.js';;
 $script->appendChild($script_src);
-$head->appendChild($script);
+//$head->appendChild($script);
+
+//script tag
+$view = $dom->createElement('script');
+$view_src= $dom->createAttribute('src');
+// $view_src->value =  $server . '/view.js';
+$view_src->value =  'http://localhost:8888/Desktop/proxy/clone/view.js';
+$view->appendChild($view_src);
+$head->appendChild($view);
+
 
 echo $dom->saveHTML();
